@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "bruno-cli-demo"
+  type: workspace
+
+collections:
+  - name: "demo"
+    path: "collections/demo"
+
+specs:
+
+docs: ''

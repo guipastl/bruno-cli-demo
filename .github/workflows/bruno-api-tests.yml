@@ -1,0 +1,28 @@
+name: Bruni API Tests Demo
+on: [pull_request, push]
+
+jobs:
+  bruno:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Create reports dir
+        run: mkdir -p reports
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }}" >> .env
+
+      - uses: usebruno/bruno-cli-action@v1
+        with:
+          working-directory: collections/demo
+          command: 'run --env test --reporter-html ../../reports/github-actions-report.html'
+
+      - uses: actions/upload-artifact@v6
+        if: ${{ !cancelled() }}
+        with:
+          name: bruno-report
+          path: reports/github-actions-report.html
+          if-no-files-found: error
