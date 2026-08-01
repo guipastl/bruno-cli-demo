@@ -1,0 +1,42 @@
+info:
+  name: PUT-users
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{BASE_URL}}/users/{{userId}}"
+  headers:
+    - name: Authorization
+      value: Bearer {{process.env.ACCESS_TOKEN}}
+  body:
+    type: json
+    data: |-
+      {
+        "name": "{{$randomFullName}}",
+        "email": "{{$randomEmail}}",
+        "gender": "female",
+        "status": "inactive"
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.id
+      operator: eq
+      value: "{{userId}}"
+    - expression: res.body.gender
+      operator: eq
+      value: female
+    - expression: res.body.status
+      operator: eq
+      value: inactive
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,47 @@
+info:
+  name: POST-users
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/users"
+  headers:
+    - name: Authorization
+      value: Bearer {{process.env.ACCESS_TOKEN}}
+  body:
+    type: json
+    data: |-
+      {
+        "name": "{{$randomFullName}}",
+        "email": "{{$randomEmail}}",
+        "gender": "male",
+        "status": "active"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const data = res.getBody();
+        bru.setEnvVar("userId", data.id);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.id
+      operator: eq
+      value: "{{userId}}"
+    - expression: res.body.gender
+      operator: eq
+      value: male
+    - expression: res.body.status
+      operator: eq
+      value: active
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

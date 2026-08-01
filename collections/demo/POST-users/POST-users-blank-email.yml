@@ -1,5 +1,5 @@
 info:
-  name: POST-users
+  name: POST-users-blank-email
   type: http
   seq: 3
 
@@ -14,7 +14,6 @@ http:
     data: |-
       {
         "name": "{{$randomFullName}}",
-        "email": "{{$randomEmail}}",
         "gender": "male",
         "status": "active"
       }
@@ -24,9 +23,13 @@ runtime:
   assertions:
     - expression: res.status
       operator: eq
-      value: "201"
-    - expression: res.body.id
-      operator: isNumber
+      value: "422"
+    - expression: res.body[0].field
+      operator: eq
+      value: email
+    - expression: res.body[0].message
+      operator: eq
+      value: can't be blank
 
 settings:
   encodeUrl: true

@@ -1,0 +1,40 @@
+info:
+  name: PATCH-users
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{BASE_URL}}/users/{{userId}}"
+  headers:
+    - name: Authorization
+      value: Bearer {{process.env.ACCESS_TOKEN}}
+  body:
+    type: json
+    data: |-
+      {
+        "gender": "male",
+        "status": "active"
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.id
+      operator: eq
+      value: "{{userId}}"
+    - expression: res.body.gender
+      operator: eq
+      value: male
+    - expression: res.body.status
+      operator: eq
+      value: active
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

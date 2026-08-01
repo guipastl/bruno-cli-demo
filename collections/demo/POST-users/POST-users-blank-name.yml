@@ -1,0 +1,38 @@
+info:
+  name: POST-users-blank-name
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/users"
+  headers:
+    - name: Authorization
+      value: Bearer {{process.env.ACCESS_TOKEN}}
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{$randomEmail}}",
+        "gender": "male",
+        "status": "active"
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "422"
+    - expression: res.body[0].field
+      operator: eq
+      value: name
+    - expression: res.body[0].message
+      operator: eq
+      value: can't be blank
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

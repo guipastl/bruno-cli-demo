@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{BASE_URL}}/users/8564330"
+  url: "{{BASE_URL}}/users/{{userId}}"
   headers:
     - name: Authorization
       value: Bearer {{process.env.ACCESS_TOKEN}}
@@ -17,20 +17,15 @@ runtime:
       operator: eq
       value: "200"
     - expression: res.body.id
-      operator: eq
-      value: "8564330"
+      operator: isNumber
     - expression: res.body.name
-      operator: eq
-      value: Ananta Pilla
+      operator: isString
     - expression: res.body.email
-      operator: eq
-      value: pilla_ananta@breitenberg-gusikowski.test
+      operator: isString
     - expression: res.body.gender
-      operator: eq
-      value: male
+      operator: isString
     - expression: res.body.status
-      operator: eq
-      value: active
+      operator: isString
 
 settings:
   encodeUrl: true

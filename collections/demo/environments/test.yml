@@ -2,4 +2,7 @@ name: test
 variables:
   - name: BASE_URL
     value: https://gorest.co.in/public/v2
-    description: ""
+  - name: userId
+    value:
+      type: number
+      data: "8564856"

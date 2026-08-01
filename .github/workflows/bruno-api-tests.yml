@@ -1,4 +1,4 @@
-name: Bruni API Tests Demo
+name: Bruno API Tests Demo
 on: [pull_request, push]
 
 jobs:
