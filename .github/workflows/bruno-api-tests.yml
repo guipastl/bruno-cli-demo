@@ -23,7 +23,7 @@ jobs:
       - uses: usebruno/bruno-cli-action@v1
         with:
           working-directory: collections/demo
-          command: 'run --env test --reporter-html ../../public/bruno-report.html'
+          command: 'run --env test --reporter-html ../../public/index.html'
 
       - name: Deploy report page
         uses: peaceiris/actions-gh-pages@v4
