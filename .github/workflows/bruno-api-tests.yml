@@ -4,11 +4,15 @@ on: [pull_request, push]
 jobs:
   bruno:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout Code
+        uses: actions/checkout@v6
 
       - name: Create reports dir
-        run: mkdir -p reports
+        run: mkdir -p public
 
       - name: Create .env file
         run: |
@@ -19,11 +23,12 @@ jobs:
       - uses: usebruno/bruno-cli-action@v1
         with:
           working-directory: collections/demo
-          command: 'run --env test --reporter-html ../../reports/github-actions-report.html'
+          command: 'run --env test --reporter-html ../../public/bruno-report.html'
 
-      - uses: actions/upload-artifact@v6
-        if: ${{ !cancelled() }}
+      - name: Deploy report page
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: bruno-report
-          path: reports/github-actions-report.html
-          if-no-files-found: error
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
