@@ -23,7 +23,7 @@ jobs:
       - uses: usebruno/bruno-cli-action@v1
         with:
           working-directory: collections/demo
-          command: 'run --env test --reporter-html ../../public/index.html'
+          command: 'run --env test --iteration-count 50 --reporter-html ../../public/index.html'
 
       - name: Deploy report page
         uses: peaceiris/actions-gh-pages@v4
